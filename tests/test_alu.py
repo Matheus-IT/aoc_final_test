@@ -34,7 +34,7 @@ def test_ula_sub():
     assert sub_res == nine
 
 
-def test_ula_overflow():
+def test_ula_should_overflow():
     """Somando 8 mais 8 deve dar overflow"""
     a = [1, 0, 0, 0]
     b = [1, 0, 0, 0]
@@ -53,3 +53,24 @@ def test_ula_overflow():
         )
         carry_in = carry_out
     assert alu.overflow() == 1
+
+
+def test_ula_should_not_overflow():
+    """Somando 2 mais 2 NÃO deve dar overflow"""
+    a = [0, 0, 1, 0]
+    b = [0, 0, 1, 0]
+
+    carry_in = 0
+    alu = Alu()
+
+    for i in range(len(a)-1, -1, -1):
+        result, carry_out = alu.receive_entries(
+            a[i],
+            b[i],
+            a_invert=0,
+            b_invert=0,
+            carry_in=carry_in,
+            is_the_last_bit=True if i == 0 else False,
+        )
+        carry_in = carry_out
+    assert alu.overflow() == 0
