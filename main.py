@@ -30,6 +30,7 @@ class Alu:
                 a_invert=0,
                 b_invert=0,
                 carry_in=carry_in,
+                ula_op=[1, 0],
                 is_the_most_significant_valid_bit=True if i == 1 else False,
             )
             carry_in = carry_out
@@ -47,11 +48,30 @@ class Alu:
                 a_invert=0,
                 b_invert=1,
                 carry_in=carry_in,
+                ula_op=[1, 0],
                 is_the_most_significant_valid_bit=True if i == 1 else False,
             )
             carry_in = carry_out
             sub_res.append(result)
         self.last_result = list(reversed(sub_res))
+        return self.last_result
+
+    def nor(self):
+        nor_res = []
+        carry_in = 0
+        for i in range(len(self.n1) - 1, -1, -1):
+            result, carry_out = self.process_entries(
+                self.n1[i],
+                self.n2[i],
+                a_invert=1,
+                b_invert=1,
+                carry_in=carry_in,
+                ula_op=[0, 0],
+                is_the_most_significant_valid_bit=True if i == 1 else False,
+            )
+            carry_in = carry_out
+            nor_res.append(result)
+        self.last_result = list(reversed(nor_res))
         return self.last_result
 
     def process_entries(
@@ -61,19 +81,29 @@ class Alu:
         a_invert: int,
         b_invert: int,
         carry_in: int,
+        ula_op: List[int],
         is_the_most_significant_valid_bit: bool,
     ):
         a = mux(a, int(not a), a_invert)
         b = mux(b, int(not b), b_invert)
+
         result_and = a and b
         result_or = a or b
-
-        result, carry_out = full_adder(a, b, carry_in)
+        result_adder, carry_out = full_adder(a, b, carry_in)
 
         if is_the_most_significant_valid_bit and carry_out == carry_in:
             self.last_calculation_was_overflow = 1
 
-        return result, carry_out
+        if ula_op == [0, 0]:
+            return result_and, carry_out
+        if ula_op == [0, 1]:
+            return result_or, carry_out
+        if ula_op == [1, 0]:
+            return result_adder, carry_out
+        if ula_op == [1, 1]:
+            print('less than')
+        else:
+            raise Exception('Invalid ula_op')
 
     def overflow(self):
         return self.last_calculation_was_overflow

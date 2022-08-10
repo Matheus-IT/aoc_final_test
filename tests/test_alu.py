@@ -81,3 +81,10 @@ def test_ula_should_not_be_zero_when_subtract():
     alu = Alu(a=[0, 1, 0, 0], b=[0, 0, 1, 0])
     alu.subtract()
     assert alu.the_last_result_was_zero() == 0
+
+
+def test_ula_nor():
+    """Testando NOR contra tabela verdade"""
+    alu = Alu(a=[0, 0, 1, 1], b=[0, 1, 0, 1])
+    nor_truth_table = [1, 0, 0, 0]
+    assert alu.nor() == nor_truth_table
