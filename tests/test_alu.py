@@ -1,5 +1,6 @@
 from ..main import Alu
 
+
 def test_ula_sum():
     # Somando 10 mais 1
     alu = Alu(a=[1, 0, 1, 0], b=[0, 0, 0, 1])
