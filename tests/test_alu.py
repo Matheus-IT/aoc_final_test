@@ -2,25 +2,25 @@ from ..main import Alu
 
 
 def test_ula_sum():
-    # Somando 10 mais 1
-    alu = Alu(a=[1, 0, 1, 0], b=[0, 0, 0, 1])
+    # Somando 4 mais 1
+    alu = Alu(a=[0, 1, 0, 0], b=[0, 0, 0, 1])
     sum_res = alu.do_sum()
-    eleven = [1, 0, 1, 1]
-    assert sum_res == eleven
+    five = [0, 1, 0, 1]
+    assert sum_res == five
 
 
 def test_ula_sub():
-    # Subtraindo 10 menos 1
+    # Subtraindo 4 menos 1
     sub_res = []
-    alu = Alu(a=[1, 0, 1, 0], b=[0, 0, 0, 1])
+    alu = Alu(a=[0, 1, 0, 0], b=[0, 0, 0, 1])
     sub_res = alu.subtract()
-    nine = [1, 0, 0, 1]
-    assert sub_res == nine
+    three = [0, 0, 1, 1]
+    assert sub_res == three
 
 
 def test_ula_should_overflow():
-    """Somando 8 mais 8 deve dar overflow"""
-    alu = Alu(a=[1, 0, 0, 0], b=[1, 0, 0, 0])
+    """Somando 7 mais 1 deve dar overflow"""
+    alu = Alu(a=[0, 1, 1, 1], b=[0, 0, 0, 1])
     alu.do_sum()
     assert alu.overflow() == 1
 

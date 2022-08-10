@@ -28,7 +28,7 @@ class Alu:
                 a_invert=0,
                 b_invert=0,
                 carry_in=carry_in,
-                is_the_last_bit=True if i == 0 else False,
+                is_the_most_significant_valid_bit=True if i == 1 else False,
             )
             carry_in = carry_out
             sum_res.append(result)
@@ -44,7 +44,7 @@ class Alu:
                 a_invert=0,
                 b_invert=1,
                 carry_in=carry_in,
-                is_the_last_bit=True if i == 0 else False,
+                is_the_most_significant_valid_bit=True if i == 1 else False,
             )
             carry_in = carry_out
             sub_res.append(result)
@@ -57,7 +57,7 @@ class Alu:
         a_invert: int,
         b_invert: int,
         carry_in: int,
-        is_the_last_bit: bool = False,
+        is_the_most_significant_valid_bit: bool,
     ):
         a = mux(a, int(not a), a_invert)
         b = mux(b, int(not b), b_invert)
@@ -66,7 +66,7 @@ class Alu:
 
         result, carry_out = full_adder(a, b, carry_in)
 
-        if is_the_last_bit and carry_out == 1:
+        if is_the_most_significant_valid_bit and carry_out == carry_in:
             self.last_calculation_was_overflow = 1
 
         return result, carry_out
