@@ -1,4 +1,5 @@
-from typing import List, Literal, Union
+from functools import reduce
+from typing import List, Literal
 
 
 def mux(val: int, inverted: int, use_inverted: int):
@@ -15,6 +16,7 @@ def full_adder(a, b, carry_in):
 class Alu:
     def __init__(self, a: List[int], b: List[int]):
         self.last_calculation_was_overflow: Literal[0, 1] = 0
+        self.last_result: List[int] = []
         self.n1 = a
         self.n2 = b
 
@@ -32,7 +34,8 @@ class Alu:
             )
             carry_in = carry_out
             sum_res.append(result)
-        return list(reversed(sum_res))
+        self.last_result = list(reversed(sum_res))
+        return self.last_result
 
     def subtract(self):
         sub_res = []
@@ -48,7 +51,8 @@ class Alu:
             )
             carry_in = carry_out
             sub_res.append(result)
-        return list(reversed(sub_res))
+        self.last_result = list(reversed(sub_res))
+        return self.last_result
 
     def process_entries(
         self,
@@ -73,6 +77,9 @@ class Alu:
 
     def overflow(self):
         return self.last_calculation_was_overflow
+
+    def the_last_result_was_zero(self):
+        return not reduce(lambda n1, n2: n1 or n2, self.last_result)
 
 
 def main():

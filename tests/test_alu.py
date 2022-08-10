@@ -53,3 +53,31 @@ def test_ula_should_not_overflow():
     alu = Alu(a=[0, 0, 1, 0], b=[0, 0, 1, 0])
     alu.do_sum()
     assert alu.overflow() == 0
+
+
+def test_ula_zero_result_when_sum():
+    """Retorna se o resultado é zero"""
+    alu = Alu(a=[0, 0, 0, 0], b=[0, 0, 0, 0])
+    alu.do_sum()
+    assert alu.the_last_result_was_zero() == 1
+
+
+def test_ula_should_not_be_zero_when_sum():
+    """Retorna se o resultado é zero"""
+    alu = Alu(a=[0, 0, 1, 0], b=[0, 0, 1, 0])
+    alu.do_sum()
+    assert alu.the_last_result_was_zero() == 0
+
+
+def test_ula_zero_result_when_subtract():
+    """Retorna se o resultado é zero"""
+    alu = Alu(a=[0, 0, 0, 0], b=[0, 0, 0, 0])
+    alu.subtract()
+    assert alu.the_last_result_was_zero() == 1
+
+
+def test_ula_should_not_be_zero_when_subtract():
+    """Retorna se o resultado é zero"""
+    alu = Alu(a=[0, 1, 0, 0], b=[0, 0, 1, 0])
+    alu.subtract()
+    assert alu.the_last_result_was_zero() == 0
