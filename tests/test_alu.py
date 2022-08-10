@@ -87,4 +87,11 @@ def test_ula_nor():
     """Testando NOR contra tabela verdade"""
     alu = Alu(a=[0, 0, 1, 1], b=[0, 1, 0, 1])
     nor_truth_table = [1, 0, 0, 0]
-    assert alu.nor() == nor_truth_table
+    assert alu.do_nor() == nor_truth_table
+
+
+def test_ula_and():
+    """Testando AND contra tabela verdade"""
+    alu = Alu(a=[0, 0, 1, 1], b=[0, 1, 0, 1])
+    and_truth_table = [0, 0, 0, 1]
+    assert alu.do_and() == and_truth_table

@@ -56,7 +56,7 @@ class Alu:
         self.last_result = list(reversed(sub_res))
         return self.last_result
 
-    def nor(self):
+    def do_nor(self):
         nor_res = []
         carry_in = 0
         for i in range(len(self.n1) - 1, -1, -1):
@@ -72,6 +72,24 @@ class Alu:
             carry_in = carry_out
             nor_res.append(result)
         self.last_result = list(reversed(nor_res))
+        return self.last_result
+
+    def do_and(self):
+        and_res = []
+        carry_in = 0
+        for i in range(len(self.n1) - 1, -1, -1):
+            result, carry_out = self.process_entries(
+                self.n1[i],
+                self.n2[i],
+                a_invert=0,
+                b_invert=0,
+                carry_in=carry_in,
+                ula_op=[0, 0],
+                is_the_most_significant_valid_bit=True if i == 1 else False,
+            )
+            carry_in = carry_out
+            and_res.append(result)
+        self.last_result = list(reversed(and_res))
         return self.last_result
 
     def process_entries(
