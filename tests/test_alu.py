@@ -95,3 +95,10 @@ def test_ula_and():
     alu = Alu(a=[0, 0, 1, 1], b=[0, 1, 0, 1])
     and_truth_table = [0, 0, 0, 1]
     assert alu.do_and() == and_truth_table
+
+
+def test_ula_or():
+    """Testando OR contra tabela verdade"""
+    alu = Alu(a=[0, 0, 1, 1], b=[0, 1, 0, 1])
+    or_truth_table = [0, 1, 1, 1]
+    assert alu.do_or() == or_truth_table
