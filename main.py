@@ -36,6 +36,7 @@ class Alu:
     def receive_values(self, a: List[int], b: List[int]):
         self.n1 = a
         self.n2 = b
+        self.last_calculation_was_overflow = 0
 
     def do_sum(self):
         sum_res = []
@@ -182,8 +183,6 @@ class Alu:
 
         if is_the_most_significant_valid_bit and carry_out == carry_in:
             self.last_calculation_was_overflow = 1
-        else:
-            self.last_calculation_was_overflow = 0
 
         if ula_op == [0, 0]:
             return result_and, carry_out, less
