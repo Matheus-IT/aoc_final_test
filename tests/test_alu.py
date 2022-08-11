@@ -30,7 +30,7 @@ def test_ula_sub():
 
 
 def test_ula_sub_2():
-    """Somando -4 menos 2"""
+    """Subtraindo -4 menos 2"""
     alu = Alu()
     alu.receive_values(a=[1, 1, 0, 0], b=[0, 0, 1, 0])
     sub_res = alu.subtract()
@@ -50,7 +50,7 @@ def test_ula_should_overflow_2():
     """Subtraindo -1 de -8 deve dar overflow"""
     alu = Alu()
     alu.receive_values(a=[1, 0, 0, 0], b=[1, 1, 1, 1])
-    alu.subtract()
+    alu.do_sum()
     assert alu.overflow() == 1
 
 
@@ -59,6 +59,83 @@ def test_ula_should_not_overflow():
     alu = Alu()
     alu.receive_values(a=[0, 0, 1, 0], b=[0, 0, 1, 0])
     alu.do_sum()
+    assert alu.overflow() == 0
+
+
+def test_ula_should_not_overflow_2():
+    """Subtraindo -1 de -8 não deve dar overflow em 32 bits"""
+    alu = Alu()
+    alu.receive_values(
+        a=[
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0,
+            0,
+        ],
+        b=[
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+        ],
+    )
+    alu.subtract()
     assert alu.overflow() == 0
 
 
