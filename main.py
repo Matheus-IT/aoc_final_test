@@ -199,7 +199,7 @@ class Alu:
         return self.last_calculation_was_overflow
 
     def the_last_result_was_zero(self):
-        return not reduce(lambda n1, n2: n1 or n2, self.last_result)
+        return 1 if not reduce(lambda n1, n2: n1 or n2, self.last_result) else 0
 
 
 def main():
@@ -231,6 +231,8 @@ def main():
         presenter(alu.do_sum()),
         'deu overflow?',
         alu.overflow(),
+        'ultimo resultado zero?',
+        alu.the_last_result_was_zero(),
     )
 
     # Testando SUBTRAÇÃO
@@ -242,6 +244,8 @@ def main():
         presenter(alu.subtract()),
         'deu overflow?',
         alu.overflow(),
+        'ultimo resultado zero?',
+        alu.the_last_result_was_zero(),
     )
 
     # Testando SET ON LESS THAN
