@@ -182,6 +182,8 @@ class Alu:
 
         if is_the_most_significant_valid_bit and carry_out == carry_in:
             self.last_calculation_was_overflow = 1
+        else:
+            self.last_calculation_was_overflow = 0
 
         if ula_op == [0, 0]:
             return result_and, carry_out, less
@@ -225,13 +227,23 @@ def main():
     n1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
     n2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     alu.receive_values(a=n1, b=n2)
-    print('Resultado SOMA:', presenter(alu.do_sum()))
+    print(
+        'Resultado SOMA:',
+        presenter(alu.do_sum()),
+        'deu overflow?',
+        alu.overflow(),
+    )
 
     # Testando SUBTRAÇÃO
     n1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
     n2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
     alu.receive_values(a=n1, b=n2)
-    print('Resultado SUBTRAÇÃO:', presenter(alu.subtract()))
+    print(
+        'Resultado SUBTRAÇÃO:',
+        presenter(alu.subtract()),
+        'deu overflow?',
+        alu.overflow(),
+    )
 
     # Testando SET ON LESS THAN
     n1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
