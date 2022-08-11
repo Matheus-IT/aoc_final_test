@@ -36,6 +36,7 @@ class Alu:
     def receive_values(self, a: List[int], b: List[int]):
         self.n1 = a
         self.n2 = b
+        self.last_calculation_was_overflow = 0
 
     def do_sum(self):
         sum_res = []
@@ -49,7 +50,7 @@ class Alu:
                 less=0,
                 carry_in=carry_in,
                 ula_op=[1, 0],
-                is_the_most_significant_valid_bit=True if i == 1 else False,
+                is_the_most_significant_valid_bit=True if i == 0 else False,
             )
             carry_in = carry_out
             sum_res.append(result)
@@ -69,7 +70,7 @@ class Alu:
                 less=0,
                 carry_in=carry_in,
                 ula_op=[1, 1],
-                is_the_most_significant_valid_bit=True if i == 1 else False,
+                is_the_most_significant_valid_bit=True if i == 0 else False,
             )
 
             carry_in = carry_out
@@ -98,7 +99,7 @@ class Alu:
                 less=0,
                 carry_in=carry_in,
                 ula_op=[1, 0],
-                is_the_most_significant_valid_bit=True if i == 1 else False,
+                is_the_most_significant_valid_bit=True if i == 0 else False,
             )
             carry_in = carry_out
             sub_res.append(result)
@@ -117,7 +118,7 @@ class Alu:
                 less=0,
                 carry_in=carry_in,
                 ula_op=[0, 0],
-                is_the_most_significant_valid_bit=True if i == 1 else False,
+                is_the_most_significant_valid_bit=True if i == 0 else False,
             )
             carry_in = carry_out
             nor_res.append(result)
@@ -136,7 +137,7 @@ class Alu:
                 less=0,
                 carry_in=carry_in,
                 ula_op=[0, 0],
-                is_the_most_significant_valid_bit=True if i == 1 else False,
+                is_the_most_significant_valid_bit=True if i == 0 else False,
             )
             carry_in = carry_out
             and_res.append(result)
@@ -155,7 +156,7 @@ class Alu:
                 less=0,
                 carry_in=carry_in,
                 ula_op=[0, 1],
-                is_the_most_significant_valid_bit=True if i == 1 else False,
+                is_the_most_significant_valid_bit=True if i == 0 else False,
             )
             carry_in = carry_out
             or_res.append(result)
@@ -180,9 +181,7 @@ class Alu:
         result_or = a or b
         result_adder, carry_out = full_adder(a, b, carry_in)
 
-        self.last_calculation_was_overflow = 0
-
-        if is_the_most_significant_valid_bit and carry_out == carry_in:
+        if is_the_most_significant_valid_bit and carry_out != carry_in:
             self.last_calculation_was_overflow = 1
 
         if ula_op == [0, 0]:

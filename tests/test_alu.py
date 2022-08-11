@@ -47,10 +47,10 @@ def test_ula_should_overflow():
 
 
 def test_ula_should_overflow_2():
-    """Subtraindo -1 de -8 deve dar overflow"""
+    """Subtraindo 1 de -8 deve dar overflow"""
     alu = Alu()
-    alu.receive_values(a=[1, 0, 0, 0], b=[1, 1, 1, 1])
-    alu.do_sum()
+    alu.receive_values(a=[1, 0, 0, 0], b=[0, 0, 0, 1])
+    alu.subtract()
     assert alu.overflow() == 1
 
 
