@@ -13,10 +13,19 @@ def full_adder(a, b, carry_in):
     return result, carry_out
 
 
+def presenter(value: List[int]) -> str:
+    new_value = list(map(str, value))
+    return ''.join(new_value)
+
+
 class Alu:
-    def __init__(self, a: List[int], b: List[int]):
+    def __init__(self):
         self.last_calculation_was_overflow: Literal[0, 1] = 0
         self.last_result: List[int] = []
+        self.n1 = []
+        self.n2 = []
+
+    def receive_values(self, a: List[int], b: List[int]):
         self.n1 = a
         self.n2 = b
 
@@ -185,7 +194,42 @@ class Alu:
 
 
 def main():
-    pass
+    # Testando AND contra tabela verdade:
+    n1 = [0, 0, 1, 1]
+    n2 = [0, 1, 0, 1]
+    alu = Alu()
+    alu.receive_values(a=n1, b=n2)
+    print('Resultado AND contra tabela verdade:', presenter(alu.do_and()))
+
+    # Testando OR contra tabela verdade:
+    n1 = [0, 0, 1, 1]
+    n2 = [0, 1, 0, 1]
+    alu.receive_values(a=n1, b=n2)
+    print('Resultado OR contra tabela verdade:', presenter(alu.do_or()))
+
+    # Testando NOR contra tabela verdade:
+    n1 = [0, 0, 1, 1]
+    n2 = [0, 1, 0, 1]
+    alu.receive_values(a=n1, b=n2)
+    print('Resultado NOR contra tabela verdade:', presenter(alu.do_nor()))
+
+    # Testando SOMA
+    n1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+    n2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+    alu.receive_values(a=n1, b=n2)
+    print('Resultado SOMA:', presenter(alu.do_sum()))
+
+    # Testando SUBTRAÇÃO
+    n1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+    n2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+    alu.receive_values(a=n1, b=n2)
+    print('Resultado SUBTRAÇÃO:', presenter(alu.subtract()))
+
+    # Testando SET ON LESS THAN
+    n1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+    n2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]
+    alu.receive_values(a=n1, b=n2)
+    print('Resultado SLT:', alu.do_slt())
 
 
 if __name__ == "__main__":
