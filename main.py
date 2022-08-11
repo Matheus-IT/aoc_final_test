@@ -24,11 +24,12 @@ class Alu:
         sum_res = []
         carry_in = 0
         for i in range(len(self.n1) - 1, -1, -1):
-            result, carry_out = self.process_entries(
+            result, carry_out, _ = self.process_entries(
                 self.n1[i],
                 self.n2[i],
                 a_invert=0,
                 b_invert=0,
+                less=0,
                 carry_in=carry_in,
                 ula_op=[1, 0],
                 is_the_most_significant_valid_bit=True if i == 1 else False,
@@ -38,15 +39,46 @@ class Alu:
         self.last_result = list(reversed(sum_res))
         return self.last_result
 
-    def subtract(self):
+    def do_slt(self):
         sub_res = []
-        carry_in = 1
+        slt_res = []
+        carry_in = 0
         for i in range(len(self.n1) - 1, -1, -1):
-            result, carry_out = self.process_entries(
+            result, carry_out, res_less = self.process_entries(
                 self.n1[i],
                 self.n2[i],
                 a_invert=0,
                 b_invert=1,
+                less=0,
+                carry_in=carry_in,
+                ula_op=[1, 1],
+                is_the_most_significant_valid_bit=True if i == 1 else False,
+            )
+
+            carry_in = carry_out
+            sub_res.append(result)
+
+            if i == 0:
+                slt_res.append(result)
+            else:
+                slt_res.append(res_less)
+
+        self.last_result = list(reversed(slt_res))
+        return 1 if self.slt_true(self.last_result) else 0
+
+    def slt_true(self, number: List[int]):
+        return any(map(lambda n: n == 1, number))
+
+    def subtract(self):
+        sub_res = []
+        carry_in = 1
+        for i in range(len(self.n1) - 1, -1, -1):
+            result, carry_out, _ = self.process_entries(
+                self.n1[i],
+                self.n2[i],
+                a_invert=0,
+                b_invert=1,
+                less=0,
                 carry_in=carry_in,
                 ula_op=[1, 0],
                 is_the_most_significant_valid_bit=True if i == 1 else False,
@@ -60,11 +92,12 @@ class Alu:
         nor_res = []
         carry_in = 0
         for i in range(len(self.n1) - 1, -1, -1):
-            result, carry_out = self.process_entries(
+            result, carry_out, _ = self.process_entries(
                 self.n1[i],
                 self.n2[i],
                 a_invert=1,
                 b_invert=1,
+                less=0,
                 carry_in=carry_in,
                 ula_op=[0, 0],
                 is_the_most_significant_valid_bit=True if i == 1 else False,
@@ -78,11 +111,12 @@ class Alu:
         and_res = []
         carry_in = 0
         for i in range(len(self.n1) - 1, -1, -1):
-            result, carry_out = self.process_entries(
+            result, carry_out, _ = self.process_entries(
                 self.n1[i],
                 self.n2[i],
                 a_invert=0,
                 b_invert=0,
+                less=0,
                 carry_in=carry_in,
                 ula_op=[0, 0],
                 is_the_most_significant_valid_bit=True if i == 1 else False,
@@ -96,11 +130,12 @@ class Alu:
         or_res = []
         carry_in = 0
         for i in range(len(self.n1) - 1, -1, -1):
-            result, carry_out = self.process_entries(
+            result, carry_out, _ = self.process_entries(
                 self.n1[i],
                 self.n2[i],
                 a_invert=0,
                 b_invert=0,
+                less=0,
                 carry_in=carry_in,
                 ula_op=[0, 1],
                 is_the_most_significant_valid_bit=True if i == 1 else False,
@@ -116,6 +151,7 @@ class Alu:
         b: int,
         a_invert: int,
         b_invert: int,
+        less: int,
         carry_in: int,
         ula_op: List[int],
         is_the_most_significant_valid_bit: bool,
@@ -131,13 +167,13 @@ class Alu:
             self.last_calculation_was_overflow = 1
 
         if ula_op == [0, 0]:
-            return result_and, carry_out
+            return result_and, carry_out, less
         if ula_op == [0, 1]:
-            return result_or, carry_out
+            return result_or, carry_out, less
         if ula_op == [1, 0]:
-            return result_adder, carry_out
+            return result_adder, carry_out, less
         if ula_op == [1, 1]:
-            print('less than')
+            return result_adder, carry_out, less
         else:
             raise Exception('Invalid ula_op')
 

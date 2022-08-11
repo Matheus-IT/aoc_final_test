@@ -102,3 +102,15 @@ def test_ula_or():
     alu = Alu(a=[0, 0, 1, 1], b=[0, 1, 0, 1])
     or_truth_table = [0, 1, 1, 1]
     assert alu.do_or() == or_truth_table
+
+
+def test_ula_slt():
+    """Testando SLT contra tabela verdade"""
+    alu = Alu(a=[0, 0, 0, 1], b=[0, 0, 1, 0])
+    assert alu.do_slt() == 1
+
+
+def test_ula_slt_inverted():
+    """Testando SLT contra tabela verdade"""
+    alu = Alu(a=[0, 0, 1, 0], b=[0, 0, 0, 1])
+    assert alu.do_slt() == 0
