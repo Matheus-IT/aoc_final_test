@@ -1,3 +1,11 @@
+"""
+EQUIPE:
+ - Adaline Nogueira Fernandes Firmo
+ - Matheus da Costa da Silva
+ - Thiago Vinicios Lima de Araujo Sousa
+"""
+
+
 from functools import reduce
 from typing import List, Literal
 
